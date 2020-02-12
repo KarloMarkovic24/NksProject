@@ -68,7 +68,7 @@ public class ArrowTime extends AppCompatActivity {
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     //resetSize();
                 }
-                return true;
+                return true;a
             }
         });
         ***/
