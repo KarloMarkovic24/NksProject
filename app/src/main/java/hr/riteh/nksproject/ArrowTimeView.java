@@ -7,8 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.util.AttributeSet;
-import android.view.SurfaceView;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -40,6 +38,7 @@ public class ArrowTimeView extends View {
 
             positionX = 0;
             positionY = 0;
+            speedX=0;
             myPaint = new Paint();
             ballBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ballv2);
 
@@ -102,20 +101,21 @@ public class ArrowTimeView extends View {
     public void MoveBall(int flag){
         // Ako zaslon jos nije "poznat" aplikaciji:
         if ((availableWidth == 0) || (availableHeight == 0)) return;
-            positionX=positionX+speedX;
-        if(flag == 1) {
 
-            // Promjena pozicije (inkrementalno) u odnosnu na vektor brzine:
+        if(flag == 1) {
             speedX = speedX+2;
         }else if(flag == 2){
             speedX=speedX-2;
         }else if(flag == 3){
             if( speedX >0){
                 speedX=speedX-2;
-                }
-            }else if(speedX <0){
-            speedX=speedX-2;
+            }else if(speedX <0) {
+                speedX = speedX + 2;
+            }
         }
+
+        positionX=positionX+speedX;
+
 
         // Provjera kolizije:
         boolean uZiduSam = false;
@@ -140,6 +140,7 @@ public class ArrowTimeView extends View {
             if (myBallInWallListener != null)
                 myBallInWallListener.onBallInWall("wall");
         }
+        invalidate();
 /**
         // Detekcija kolizije s "novim zivotom": DETEKCIJA S OBJEKTOM KOJEG STVARAMO TJ ZADATKOM
         int obstacleIndex = isBallInObstacle();

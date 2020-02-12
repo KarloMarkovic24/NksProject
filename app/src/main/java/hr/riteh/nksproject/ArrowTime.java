@@ -36,17 +36,8 @@ public class ArrowTime extends AppCompatActivity {
     boolean lifeJustLost = false;
     int radius;
 
-
-    LinearLayout layoutLifeBox;                 // LL koji sadrzi prikaz raspolozivih zivota
-
     // Bouncing Ball -> Bouncing Ball ++ support
     boolean ballPaused = true;
-    long lastKnownResult = -1;
-    MenuItem stopGoItem, startOverItem, sendHighscoreItem, sendLastResultItem;
-    AlertDialog highscoreAlertDlg;
-
-
-
 
 
     @Override
@@ -125,18 +116,8 @@ public class ArrowTime extends AppCompatActivity {
         mainView.addView(arrowTimeView);
 
 
-        // Upravljanje lopticom putem upravljackih buttona:
-      /***  leftButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) { arrowTimeView.invokeCommand(0);
-            }
-        });
 
-        rightButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                arrowTimeView.invokeCommand(1);
-            }
-        });
-        */
+
          leftButton.setOnTouchListener(new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -159,6 +140,12 @@ public class ArrowTime extends AppCompatActivity {
                     flag=3;
                 }
                 return true;
+            }
+        });
+        timeB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                taskHandler.postDelayed(myTask, FRAME_RATE);
             }
         });
 
@@ -232,15 +219,12 @@ public class ArrowTime extends AppCompatActivity {
             Log.d("sas", String.valueOf(flag)+"unutar runabla");// izracunaj nove pozicije loptice
             arrowTimeView.invalidate();      // zakazi novo iscrtavanje custom view-a
 
-            if ((!lifeJustLost) && (!ballPaused)) {
+
                 // Ako zivot nije izgubljen (nema kolizije sa zidom), igra "dobiva novi frame":
                 time += FRAME_RATE;
                 taskHandler.postDelayed(myTask, FRAME_RATE);
-            }
-            else {
-                // Zivot je izgubljem, trenutno zaustavi igru:
-                taskHandler.removeCallbacks(myTask);
-            }
+
+
         }
     };
 
