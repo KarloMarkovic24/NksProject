@@ -90,7 +90,7 @@ public class ArrowTime extends AppCompatActivity {
         // primijetiti u xml: android:layout_height="wrap_content"
 
         // Programsko odredjivanje dimenzija loptice:
-        this.radius = screenWidth / 36;
+        this.radius = screenHeight / 36;
 
         // Upravljacki buttoni:
         leftButton = findViewById(R.id.leftButtonAT);
@@ -146,6 +146,7 @@ public class ArrowTime extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 taskHandler.postDelayed(myTask, FRAME_RATE);
+                timeB.setVisibility(View.INVISIBLE);
             }
         });
 
