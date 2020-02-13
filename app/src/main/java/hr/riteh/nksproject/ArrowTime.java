@@ -119,17 +119,17 @@ public class ArrowTime extends AppCompatActivity {
 
 
          leftButton.setOnTouchListener(new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-        if(event.getAction() == MotionEvent.ACTION_DOWN) {
-        flag=2;
-            Log.d("sas", String.valueOf(flag));
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-        flag=3;
-        Log.d("sas", String.valueOf(flag));
-        }
-        return true;
-        }
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    flag=2;
+                    Log.d("sas", String.valueOf(flag));
+                }else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    flag=3;
+                    Log.d("sas", String.valueOf(flag));
+                }
+                return true;
+            }
         });
         rightButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -215,7 +215,7 @@ public class ArrowTime extends AppCompatActivity {
         @Override
         public void run(){
                           // mora li loptica ubrzati?
-                           // update vremena
+                          // update vremena
             arrowTimeView.MoveBall(flag);
             Log.d("sas", String.valueOf(flag)+"unutar runabla");// izracunaj nove pozicije loptice
             arrowTimeView.invalidate();      // zakazi novo iscrtavanje custom view-a

@@ -18,10 +18,12 @@ public class ArrowTimeView extends View {
 
     int availableWidth, availableHeight;    // raspolozive dimenzije ovog view-a
     float positionX, positionY;             // pozicija loptice;
-     float    speedX;       // brzina loptice
+    float speedX;                        // brzina loptice
+    float maxSpeed;
     float ballRadius;                       // dimenzija loptice
+    float speedStep;
     Bitmap ballBitmap;                      // loptica (slika)
-                // trenutna boja loptice (ako se crta "na ruke")
+                                            // trenutna boja loptice (ako se crta "na ruke")
     Paint myPaint;                          // podrska za crtanje
     private ballInWallListener myBallInWallListener;    // listener za detekciju kolizije
 
@@ -38,7 +40,9 @@ public class ArrowTimeView extends View {
 
             positionX = 0;
             positionY = 0;
-            speedX=0;
+            speedX = 0;
+            maxSpeed = 20;
+            speedStep = maxSpeed / 30;
             myPaint = new Paint();
             ballBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ballv2);
 
@@ -103,18 +107,24 @@ public class ArrowTimeView extends View {
         if ((availableWidth == 0) || (availableHeight == 0)) return;
 
         if(flag == 1) {
-            speedX = speedX+2;
+            speedX = speedX + speedStep;
+            if (speedX > maxSpeed) speedX = maxSpeed;
         }else if(flag == 2){
-            speedX=speedX-2;
+            speedX = speedX - speedStep;
+            if (speedX < -maxSpeed) speedX = -maxSpeed;
         }else if(flag == 3){
-            if( speedX >0){
-                speedX=speedX-2;
-            }else if(speedX <0) {
-                speedX = speedX + 2;
+            if( speedX > 0){
+                speedX = speedX - speedStep;
+                if (speedX < 0) speedX = 0;
+            }else if(speedX < 0) {
+                speedX = speedX + speedStep;
+                if (speedX > 0) speedX = 0;
             }
         }
 
-        positionX=positionX+speedX;
+
+
+        positionX = positionX + speedX;
 
 
         // Provjera kolizije:
