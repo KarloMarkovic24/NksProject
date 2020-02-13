@@ -26,18 +26,12 @@ public class ArrowTime extends AppCompatActivity {
     ImageButton leftButton;
     ImageButton rightButton;
     ImageButton timeB;
-
-
     ArrowTimeView arrowTimeView;
     Handler taskHandler;
     long time;
     int flag=0;
-    int FRAME_RATE = 20;    // ~ 50 "fps"
-    boolean lifeJustLost = false;
+    int FRAME_RATE = 20;
     int radius;
-
-    // Bouncing Ball -> Bouncing Ball ++ support
-    boolean ballPaused = true;
 
 
     @Override
@@ -46,91 +40,37 @@ public class ArrowTime extends AppCompatActivity {
         setContentView(R.layout.activity_arrow_time);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-
-        /***
-        leftButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                    //increaseSize();
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    //resetSize();
-                }
-                return true;
-            }
-        });
-
-        rightButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN) {
-                    //increaseSize();
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    //resetSize();
-                }
-                return true;a
-            }
-        });
-        ***/
-
-        // Programski dohvat dimenzija zaslona (screenWidth X screenHeight):
         DisplayMetrics myDisplaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(myDisplaymetrics);
         int screenHeight = myDisplaymetrics.heightPixels;
         int screenWidth = myDisplaymetrics.widthPixels;
-
-        // Instanciranje glavnih dijelova layout-a:
         LinearLayout mainView = findViewById(R.id.viewAT);
 
-
-        // Programsko odredjivanje dimenzija (height) glavnih dijelova zaslona
-        // (primijetiti da "visinski" odnos nije odredjen u xml definicijama):
-
-        // mainView LL ce "preuzeti" ostatak raspolozive visine zaslona;
-        // primijetiti u xml: android:layout_height="wrap_content"
-
-        // Programsko odredjivanje dimenzija loptice:
-        this.radius = screenHeight / 36;
-
-        // Upravljacki buttoni:
         leftButton = findViewById(R.id.leftButtonAT);
         rightButton = findViewById(R.id.rightButtonAT);
         timeB = findViewById(R.id.timeAT);
 
-        // Vizualizacija preostalih zivota
-        // (moglo bi i elegantnije):
-
-
-        // Glavni (igraci) dio layouta je u xml-u definiran samo kao Linear layout;
-        // dakle "obicni" view element bez dodatnih opisa.
-        // Medjutim, cijela njegova "definicija" (izgled i ponasanje) napisani su
-        // u vanjskom razredu (=> kreiran je CUSTOM view element):
+        this.radius = screenHeight / 36;
 
         arrowTimeView = new ArrowTimeView(this);
-        // Osnovni "setup" igraceg dijela:
-
         arrowTimeView.setBallRadius((float) radius);
+        arrowTimeView.setCenterPosition(screenWidth/2,screenHeight/2);
         arrowTimeView.setBallPosition(screenWidth/2-radius,screenHeight/2-radius);
-
-        // na linear layout dodaje se custom view (jedini element):
+        arrowTimeView.setTargetPosition(screenWidth/2-radius+300,screenHeight/2-radius);
         mainView.addView(arrowTimeView);
-
-
-
 
          leftButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_DOWN) {
                     flag=2;
-                    Log.d("sas", String.valueOf(flag));
                 }else if (event.getAction() == MotionEvent.ACTION_UP) {
                     flag=3;
-                    Log.d("sas", String.valueOf(flag));
                 }
                 return true;
             }
         });
+
         rightButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -142,6 +82,7 @@ public class ArrowTime extends AppCompatActivity {
                 return true;
             }
         });
+
         timeB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,8 +117,6 @@ public class ArrowTime extends AppCompatActivity {
         // informacija na UI (i pripadnim redom poruka)
         // (each Handler instance is associated with a single thread and that thread's message queue):
         taskHandler = new Handler();
-        time = 0;   // vrijeme igranja
-
 
     }
 
@@ -204,9 +143,7 @@ public class ArrowTime extends AppCompatActivity {
         super.onResume();
 
         if ((taskHandler!=null) && (myTask!=null)) {
-            if (!ballPaused) {
-                taskHandler.postDelayed(myTask, FRAME_RATE);
-            }
+            taskHandler.postDelayed(myTask, FRAME_RATE);
         }
     }
 
@@ -214,16 +151,12 @@ public class ArrowTime extends AppCompatActivity {
         // Runnable objekt mora imati definiranu metodu 'run':
         @Override
         public void run(){
-                          // mora li loptica ubrzati?
-                          // update vremena
+
             arrowTimeView.MoveBall(flag);
-            Log.d("sas", String.valueOf(flag)+"unutar runabla");// izracunaj nove pozicije loptice
             arrowTimeView.invalidate();      // zakazi novo iscrtavanje custom view-a
 
-
-                // Ako zivot nije izgubljen (nema kolizije sa zidom), igra "dobiva novi frame":
-                time += FRAME_RATE;
-                taskHandler.postDelayed(myTask, FRAME_RATE);
+            // Ako zivot nije izgubljen (nema kolizije sa zidom), igra "dobiva novi frame":
+            taskHandler.postDelayed(myTask, FRAME_RATE);
 
 
         }

@@ -9,35 +9,35 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.View;
 
-import androidx.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 public class ArrowTimeView extends View {
 
-    int availableWidth, availableHeight;    // raspolozive dimenzije ovog view-a
-    float positionX, positionY;             // pozicija loptice;
-    float speedX;                        // brzina loptice
+    int availableWidth, availableHeight;
+    float positionX, positionY,targX,targY;
+    float centerX,centerY;
+    float speedX;
     float maxSpeed;
-    float ballRadius;                       // dimenzija loptice
+    float ballRadius;
     float speedStep;
-    Bitmap ballBitmap;                      // loptica (slika)
-                                            // trenutna boja loptice (ako se crta "na ruke")
-    Paint myPaint;                          // podrska za crtanje
-    private ballInWallListener myBallInWallListener;    // listener za detekciju kolizije
+    Bitmap ballBitmap;
+    Bitmap squareBitmap;
+    Paint myPaint;
+    private ballInWallListener myBallInWallListener;
 
 
-    // Podrska za upravljanje mogucnoscu dobivanja novog zivota:
+
     Random r;
     ArrayList<PointF> myObstacles;          // kolekcija s informacijama o life-up "objektu" (POZICIJA)
-    ArrayList<Long> myObstacleShowTimes;    // kolekcija s informacijama o life-up "objektu" (VRIJEME POJAVLJIVANJA)
-    long currentTime = 0;
-    long LIFE_UP_EXPIRATION_TIME = 6000;    // mogucnost za pokupiti novi zivot "traje" 6s
+
 
     public ArrowTimeView(Context context) {
         super(context);
-
+            targX=0;
+            targY=0;
+            centerX=0;
+            centerY=0;
             positionX = 0;
             positionY = 0;
             speedX = 0;
@@ -45,9 +45,8 @@ public class ArrowTimeView extends View {
             speedStep = maxSpeed / 30;
             myPaint = new Paint();
             ballBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ballv2);
-
+            squareBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.black_square);
             myObstacles = new ArrayList<>();            // Gdje ce se prilike pojavljivati (pozicije)
-            myObstacleShowTimes = new ArrayList<>();    // Kada ce se prilike pojavljivati (vremena)
         }
 
 
@@ -62,48 +61,32 @@ public class ArrowTimeView extends View {
     }
 
 
-
-
-
-
-    /*
-    // Kada bi ovaj view element ukljucili u xml definiciju sucelja, primjerice kao:
-    // <hr.rma.sl.bouncingball.BounceView>...
-    // ...onda bi nam trebala definicija i ovakvog konstruktora (koji bi mogao primiti
-    // atribute view-a opisanih u xml-u):
-    public BounceView(Context context, AttributeSet attrs){
-        super(context, attrs);
-        // ...
-    }
-    */
-
-
-
-
-
-
     // Postavljanje pozicije loptice:
     public void setBallPosition(int x, int y){
         this.positionX = x;
         this.positionY = y;
     }
 
+    public void setTargetPosition(int x, int y){
+        this.targX = x;
+        this.targY = y;
+    }
+    public  void setCenterPosition(int x,int y){
+        this.centerX = x;
+        this.centerY = y;
+    }
 
-    // Postavljanje dimenzije loptice:
     public void setBallRadius(float radius){
         this.ballRadius = radius;
         int d = Math.round(radius * 2);
         // skaliranje slike; inace moze biti zahtjevno za memorijske resurse:
         ballBitmap = Bitmap.createScaledBitmap(ballBitmap, d, d, false);
-
+        squareBitmap = Bitmap.createScaledBitmap(squareBitmap,2*d,2*d,false);
     }
 
 
-
-
-    // Izracun nove pozicije loptice zasnovan na inkrementalnom pomaku:
     public void MoveBall(int flag){
-        // Ako zaslon jos nije "poznat" aplikaciji:
+
         if ((availableWidth == 0) || (availableHeight == 0)) return;
 
         if(flag == 1) {
@@ -121,28 +104,12 @@ public class ArrowTimeView extends View {
                 if (speedX > 0) speedX = 0;
             }
         }
-
-
-
         positionX = positionX + speedX;
 
 
         // Provjera kolizije:
         boolean uZiduSam = false;
 
-        // Kolizija; desni zid:
-        if (positionX + ballRadius > availableWidth) {
-            positionX = availableWidth - ballRadius;
-            //speedX = -speedX;
-            uZiduSam = true;
-        }
-
-        // Kolizija; lijevi zid:
-        if (positionX - ballRadius < 0) {
-            positionX = 0 + ballRadius;
-            //speedX = -speedX;
-            uZiduSam = true;
-        }
 
 
         // Po detekciji kolizije, generira se odgovarajuci event:
@@ -151,19 +118,19 @@ public class ArrowTimeView extends View {
                 myBallInWallListener.onBallInWall("wall");
         }
         invalidate();
-/**
+
         // Detekcija kolizije s "novim zivotom": DETEKCIJA S OBJEKTOM KOJEG STVARAMO TJ ZADATKOM
         int obstacleIndex = isBallInObstacle();
         if (obstacleIndex != -1){
             // Pronadjena je kolizija unutar regularnog vremena,
             // moguce je odgovarajucu ikonu maknuti s ekrana (ta life-up mogucnost se
             // brise iz kolekcije mogucnosti), a zaradjen je novi zivot (to treba dojaviti MainActivity-ju)
-            remove_obstacle(obstacleIndex);
+
 
             // podizanje eventa, sada s drugim parametrom (obstacle):
             if (myBallInWallListener !=null)
                 myBallInWallListener.onBallInWall("obstacle");
-        }***/
+        }
     }
 
 
@@ -213,24 +180,14 @@ public class ArrowTimeView extends View {
         myPaint.setStyle(Paint.Style.STROKE);
         canvas.drawRect(0, 0, availableWidth, availableHeight, myPaint);
 
-        // Loptica (ako se crta "na ruke"):
-        //myPaint.setColor(this.currentBallColor);
-        //myPaint.setStyle(Paint.Style.FILL);
-        //myPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-        //canvas.drawCircle(positionX, positionY, ballRadius, myPaint);
-
         // Loptica (ako se koristi neki postojeci drawable):
         canvas.drawBitmap(ballBitmap, positionX - ballRadius, positionY - ballRadius, myPaint);
-
+        canvas.drawBitmap(squareBitmap,targX-2*ballRadius,targY-2*ballRadius,myPaint);
 
 
     }
 
 
-
-    //*** Podrska za nove zivote ***//
-
-    // Brisanje i ponovno generiranje svih informacija vezanih za nove zivote
 
 
 
@@ -248,7 +205,7 @@ public class ArrowTimeView extends View {
         PointF newPoint = new PointF(random_x, random_y);
 
         myObstacles.add(newPoint);
-        myObstacleShowTimes.add(momentToShow);
+
     }
 
 
@@ -263,12 +220,6 @@ public class ArrowTimeView extends View {
         // Na ovom mjestu uvijek imamo azuriranu kolekciju koja sadrzi samo validne life-up informacije
         // (ostali se s vremenom brisu, ili zbog time-expire, ili jer su uspjesno "pokupljeni"):
         for (int i = 0; i < myObstacles.size(); i++) {
-            long beginTime = myObstacleShowTimes.get(i);
-            long endTime = beginTime + LIFE_UP_EXPIRATION_TIME;
-            if (!((this.currentTime >= beginTime) &&
-                    (this.currentTime <= endTime))) {
-                continue;
-            }
 
             // Pronadjeno je "regularno" vrijeme u kojem je na zaslonu sigurno prikazana
             // life-up mogucnost (u protivnom je ne bi bilo u kolekciji).
@@ -276,57 +227,23 @@ public class ArrowTimeView extends View {
             PointF iObstacle = myObstacles.get(i);
             float leftBorder = iObstacle.x - ballRadius * 2;
             float rightBorder = iObstacle.x + ballRadius * 2;
-            float upperBorder = iObstacle.y - ballRadius * 2;
-            float bottomBorder = iObstacle.y + ballRadius * 2;
+
 
             if ((positionX + ballRadius >= leftBorder) &&
-                    (positionX + ballRadius <= rightBorder) &&
-                    (positionY + ballRadius >= upperBorder) &&
-                    (positionY + ballRadius <= bottomBorder))
+                    (positionX + ballRadius <= rightBorder))
             {
                 return i;
             }
 
             if ((positionX - ballRadius >= leftBorder) &&
-                    (positionX - ballRadius <= rightBorder) &&
-                    (positionY - ballRadius >= upperBorder) &&
-                    (positionY - ballRadius <= bottomBorder))
+                    (positionX - ballRadius <= rightBorder))
             {
                 return i;
             }
 
-            if ((positionX - ballRadius >= leftBorder) &&
-                    (positionX - ballRadius <= rightBorder) &&
-                    (positionY + ballRadius >= upperBorder) &&
-                    (positionY + ballRadius <= bottomBorder))
-            {
-                return i;
-            }
-
-            if ((positionX + ballRadius >= leftBorder) &&
-                    (positionX + ballRadius <= rightBorder) &&
-                    (positionY - ballRadius >= upperBorder) &&
-                    (positionY - ballRadius <= bottomBorder))
-            {
-                return i;
-            }
         }
 
         return -1;
     }
-
-
-    // Brisanje life-up mogucnosti iz odnosnih kolekcija:
-    public void remove_obstacle(int obstacleToRemove){
-        // Uvijek moramo paziti da azuriramo obje kolekcije
-        // (ovo se moze elegantnije rijesiti, na nacin da stvorimo poseban razred koji bi sadrzavao
-        // i vrijeme i poziciju za life-up mogucnost):
-        if (myObstacles.size() > 0)
-        {
-            myObstacles.remove(obstacleToRemove);
-            myObstacleShowTimes.remove(obstacleToRemove);
-        }
-    }
-
 
 }
