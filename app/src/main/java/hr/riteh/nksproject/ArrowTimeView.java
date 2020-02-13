@@ -26,8 +26,7 @@ public class ArrowTimeView extends View {
     Paint myPaint;
     private ballInWallListener myBallInWallListener;
 
-
-
+    
     Random r;
     ArrayList<PointF> myObstacles;          // kolekcija s informacijama o life-up "objektu" (POZICIJA)
 
