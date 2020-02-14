@@ -2,23 +2,23 @@ package hr.riteh.nksproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class ArrowTime extends AppCompatActivity {
@@ -28,10 +28,18 @@ public class ArrowTime extends AppCompatActivity {
     ImageButton timeB;
     ArrowTimeView arrowTimeView;
     Handler taskHandler;
-    long time;
+    long time1;
+    long time2;
+    long taskTime;
+    long startTask;
+    long endTask;
+    int timeFlag=0;
     int flag=0;
     int FRAME_RATE = 20;
     int radius;
+    private static final int NUMBER_OF_TASKS = 3;
+    boolean taskCompleted=true;
+    ArrayList<Long> times;
 
 
     @Override
@@ -42,22 +50,23 @@ public class ArrowTime extends AppCompatActivity {
 
         DisplayMetrics myDisplaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(myDisplaymetrics);
-        int screenHeight = myDisplaymetrics.heightPixels;
-        int screenWidth = myDisplaymetrics.widthPixels;
+        final int screenHeight = myDisplaymetrics.heightPixels;
+        final int screenWidth = myDisplaymetrics.widthPixels;
         LinearLayout mainView = findViewById(R.id.viewAT);
-
         leftButton = findViewById(R.id.leftButtonAT);
         rightButton = findViewById(R.id.rightButtonAT);
         timeB = findViewById(R.id.timeAT);
 
-        this.radius = screenHeight / 36;
+        radius = screenHeight / 36;
 
         arrowTimeView = new ArrowTimeView(this);
         arrowTimeView.setBallRadius((float) radius);
         arrowTimeView.setCenterPosition(screenWidth/2,screenHeight/2);
         arrowTimeView.setBallPosition(screenWidth/2-radius,screenHeight/2-radius);
-        arrowTimeView.setTargetPosition(screenWidth/2-radius+300,screenHeight/2-radius);
+        arrowTimeView.setTargets();
+        arrowTimeView.setTargetPosition();
         mainView.addView(arrowTimeView);
+        times = new ArrayList<>();
 
          leftButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -86,40 +95,84 @@ public class ArrowTime extends AppCompatActivity {
         timeB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                taskCompleted=false;
                 taskHandler.postDelayed(myTask, FRAME_RATE);
                 timeB.setVisibility(View.INVISIBLE);
+                startTask = System.currentTimeMillis();
             }
         });
 
-
-
-
-         /***
-        // Listener za koliziju:
-        arrowTimeView.setBallInWallListener(new arrowTimeView.ballInWallListener() {
+        arrowTimeView.setBallInWallListener(new ArrowTimeView.ballInWallListener() {
             @Override
-            public void onBallInWall(String cause) {
-                if (cause.equals("wall")) {
+            public void onBallInWall(String input) {
 
+                if(input.equals("outside")){
+                    timeFlag=0;
+                    time1=0;
+                    time2=0;
                 }
-                else if (cause.equals("obstacle")) {
-                    // ovdje cemo detektirati neku drugu vrstu kolizije;
-                    // npr. ako prodjemo "kroz" neki objekt koji nije zid, onda
-                    // mozemo biti nagradjeni novim zivotom
 
+                if (input.equals("inside")) {
+                    if(timeFlag==0){
+                        timeFlag=1;
+                        time1=System.currentTimeMillis();
+                    }
+
+                    time2=System.currentTimeMillis();
+
+                    if(time2-time1>500) {
+                        endTask = System.currentTimeMillis();
+                        taskCompleted=true;
+                        arrowTimeView.setBallPosition(screenWidth/2-radius,screenHeight/2-radius);
+                        arrowTimeView.nextTarget();
+                        timeB.setVisibility(View.VISIBLE);
+                        taskDone();
+                    }
                 }
             }
-        });  ***/
-
-
-
-        // taskHandler je objekt koji ce nam upravljati periodičnim zadavanjem zadataka iscrtavanja
-        // informacija na UI (i pripadnim redom poruka)
-        // (each Handler instance is associated with a single thread and that thread's message queue):
+        });
         taskHandler = new Handler();
-
     }
 
+    public void taskDone(){
+
+        taskTime=endTask-startTask;
+        times.add(taskTime);
+
+        if(times.size() == NUMBER_OF_TASKS){
+            testingDone();
+        }
+    }
+
+    private void testingDone() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ArrowTime.this);
+        String userName = preferences.getString("username","");
+        String results = (userName + " " + "ArrowTime \n");
+
+        for(int i=0;i<times.size();i++){
+            results+=("Task "+(i+1)+": "+times.get(i)+"\n");
+        }
+
+        try {
+            File sdCard = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            File myFile = new File(sdCard, "results.txt");
+
+            if (! myFile.exists()) myFile.createNewFile();
+
+            FileWriter fWriter = new FileWriter(myFile,true);
+            fWriter.append(results + "\n");
+            fWriter.close();
+            Toast.makeText(ArrowTime.this, "Result successfully stored!", Toast.LENGTH_LONG).show();
+
+        }catch(Exception e){
+            e.printStackTrace();
+            Log.e("asd", "Could not write file " + e.getMessage());
+        }
+
+        Intent intent = new Intent(ArrowTime.this,MainActivity.class );
+        startActivity(intent);
+        finish();
+    }
 
     @Override
     public void onDestroy() {
@@ -128,7 +181,6 @@ public class ArrowTime extends AppCompatActivity {
         super.onDestroy();
     }
 
-
     @Override
     public void onPause() {
         super.onPause();
@@ -136,7 +188,6 @@ public class ArrowTime extends AppCompatActivity {
         if ((taskHandler!=null) && (myTask!=null))
             taskHandler.removeCallbacks(myTask);
     }
-
 
     @Override
     public void onResume() {
@@ -148,20 +199,18 @@ public class ArrowTime extends AppCompatActivity {
     }
 
     private Runnable myTask = new Runnable(){
-        // Runnable objekt mora imati definiranu metodu 'run':
         @Override
         public void run(){
 
-            arrowTimeView.MoveBall(flag);
-            arrowTimeView.invalidate();      // zakazi novo iscrtavanje custom view-a
+            arrowTimeView.moveBall(flag);
+            arrowTimeView.setTargetPosition();
+            arrowTimeView.invalidate();
 
-            // Ako zivot nije izgubljen (nema kolizije sa zidom), igra "dobiva novi frame":
-            taskHandler.postDelayed(myTask, FRAME_RATE);
-
-
+            if (!taskCompleted) {
+                taskHandler.postDelayed(myTask, FRAME_RATE);
+            }else{
+                taskHandler.removeCallbacks(myTask);
+            }
         }
     };
-
-
-
 }
