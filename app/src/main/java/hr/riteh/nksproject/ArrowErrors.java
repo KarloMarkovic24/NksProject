@@ -86,6 +86,7 @@ public class ArrowErrors extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 taskCompleted=false;
+                arrowErrorsView.resetSpeed();
                 taskHandler.postDelayed(myTask, FRAME_RATE);
                 timeB.setVisibility(View.INVISIBLE);
             }

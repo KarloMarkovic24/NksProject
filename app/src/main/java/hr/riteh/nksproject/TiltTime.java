@@ -75,6 +75,7 @@ public class TiltTime extends AppCompatActivity {
             public void onClick(View v) {
                 setFirstOrientation=true;
                 taskCompleted=false;
+                tiltTimeView.resetSpeed();
                 taskHandler.postDelayed(myTask, FRAME_RATE);
                 timeB.setVisibility(View.INVISIBLE);
                 startTask = System.currentTimeMillis();

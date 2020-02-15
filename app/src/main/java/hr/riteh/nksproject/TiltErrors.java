@@ -66,6 +66,7 @@ public class TiltErrors extends AppCompatActivity {
             public void onClick(View v) {
                 setFirstOrientation=true;
                 taskCompleted=false;
+                tiltErrorsView.resetSpeed();
                 taskHandler.postDelayed(myTask, FRAME_RATE);
                 timeB.setVisibility(View.INVISIBLE);
             }

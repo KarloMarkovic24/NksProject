@@ -99,6 +99,8 @@ public class TiltTimeView extends View {
         squareBitmap = Bitmap.createScaledBitmap(squareBitmap,2*d,2*d,false);
     }
 
+    public void resetSpeed(){this.speedX=0;}
+
     public void moveBall(int defaultOrientation,int newOrientation){
 
         int diffOrientation=newOrientation-defaultOrientation;
