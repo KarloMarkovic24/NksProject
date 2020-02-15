@@ -30,7 +30,7 @@ public class ArrowErrors extends AppCompatActivity {
     int flag=0;
     int FRAME_RATE = 20;
     int radius;
-    private static final int NUMBER_OF_TASKS = 3;
+    private static final int NUMBER_OF_TASKS = 20;
     boolean taskCompleted=true;
 
     @Override
@@ -53,7 +53,7 @@ public class ArrowErrors extends AppCompatActivity {
         arrowErrorsView.setBallRadius((float) radius);
         arrowErrorsView.setCenterPosition(screenWidth/2,screenHeight/2);
         arrowErrorsView.setBallPosition(screenWidth/2-radius,screenHeight-4*radius);
-        arrowErrorsView.setTargets();
+        arrowErrorsView.setTargets(screenWidth);
         arrowErrorsView.setTargetPosition();
         mainView.addView(arrowErrorsView);
 

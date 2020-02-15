@@ -60,17 +60,29 @@ public class ArrowTimeView extends View {
         this.myBallInWallListener = inputListener;
     }
 
-    public void setTargets(){
-        float x = centerX+100;
+    public void setTargets(int w){
         float y = centerY-ballRadius;
-        PointF newPoint = new PointF(x,y);
-        myTargets.add(newPoint);
-        float x2 =centerX+250;
-        PointF newPoint2 = new PointF(x2,y);
-        myTargets.add(newPoint2);
-        float x3 = centerX+300;
-        PointF newPoint3 = new PointF(x3,y);
-        myTargets.add(newPoint3);
+
+     	myTargets.add(new PointF(w/18 * 7, y));
+     	myTargets.add(new PointF(w/18 * 1, y));
+        myTargets.add(new PointF(w/18 * 13, y));
+        myTargets.add(new PointF(w/18 * 4, y));
+      	myTargets.add(new PointF(w/18 * 15, y));
+      	myTargets.add(new PointF(w/18 * 8, y));
+        myTargets.add(new PointF(w/18 * 6, y));
+        myTargets.add(new PointF(w/18 * 14, y));
+        myTargets.add(new PointF(w/18 * 17, y));
+        myTargets.add(new PointF(w/18 * 12, y));
+        myTargets.add(new PointF(w/18 * 10, y));
+        myTargets.add(new PointF(w/18 * 3, y));
+        myTargets.add(new PointF(w/18 * 11, y));
+        myTargets.add(new PointF(w/18 * 2, y));
+        myTargets.add(new PointF(w/18 * 5, y));
+        myTargets.add(new PointF(w/18 * 7, y));
+        myTargets.add(new PointF(w/18 * 15, y));
+        myTargets.add(new PointF(w/18 * 12, y));
+        myTargets.add(new PointF(w/18 * 10, y));
+        myTargets.add(new PointF(w/18 * 5, y));
     }
 
     public void setBallPosition(int x, int y){

@@ -37,7 +37,7 @@ public class ArrowTime extends AppCompatActivity {
     int flag=0;
     int FRAME_RATE = 20;
     int radius;
-    private static final int NUMBER_OF_TASKS = 3;
+    private static final int NUMBER_OF_TASKS = 20;
     boolean taskCompleted=true;
     ArrayList<Long> times;
 
@@ -63,7 +63,7 @@ public class ArrowTime extends AppCompatActivity {
         arrowTimeView.setBallRadius((float) radius);
         arrowTimeView.setCenterPosition(screenWidth/2,screenHeight/2);
         arrowTimeView.setBallPosition(screenWidth/2-radius,screenHeight/2-radius);
-        arrowTimeView.setTargets();
+        arrowTimeView.setTargets(screenWidth);
         arrowTimeView.setTargetPosition();
         mainView.addView(arrowTimeView);
         times = new ArrayList<>();

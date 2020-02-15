@@ -37,7 +37,7 @@ public class TiltTime extends AppCompatActivity {
     int newOrientation=0;
     int FRAME_RATE = 20;
     int radius;
-    private static final int NUMBER_OF_TASKS = 3;
+    private static final int NUMBER_OF_TASKS = 20;
     boolean taskCompleted=true;
     boolean setFirstOrientation=false;
     ArrayList<Long> times;
@@ -63,7 +63,7 @@ public class TiltTime extends AppCompatActivity {
         tiltTimeView.setBallRadius((float) radius);
         tiltTimeView.setCenterPosition(screenWidth/2,screenHeight/2);
         tiltTimeView.setBallPosition(screenWidth/2-radius,screenHeight/2-radius);
-        tiltTimeView.setTargets();
+        tiltTimeView.setTargets(screenWidth);
         tiltTimeView.setTargetPosition();
         mainView.addView(tiltTimeView);
         times = new ArrayList<>();

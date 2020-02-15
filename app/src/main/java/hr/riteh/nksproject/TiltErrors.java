@@ -56,7 +56,7 @@ public class TiltErrors extends AppCompatActivity {
         tiltErrorsView.setBallRadius((float) radius);
         tiltErrorsView.setCenterPosition(screenWidth/2,screenHeight/2);
         tiltErrorsView.setBallPosition(screenWidth/2-radius,screenHeight-4*radius);
-        tiltErrorsView.setTargets();
+        tiltErrorsView.setTargets(screenWidth);
         tiltErrorsView.setTargetPosition();
         mainView.addView(tiltErrorsView);
 

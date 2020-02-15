@@ -60,17 +60,28 @@ public class TiltErrorsView extends View {
         this.myBallInWallListener = inputListener;
     }
 
-    public void setTargets(){
-        float x = 300;
-        float y = 100;
-        PointF newPoint = new PointF(x,y);
-        myTargets.add(newPoint);
-        float x2 =centerX+550;
-        PointF newPoint2 = new PointF(x2,y);
-        myTargets.add(newPoint2);
-        float x3 = centerX+350;
-        PointF newPoint3 = new PointF(x3,y);
-        myTargets.add(newPoint3);
+    public void setTargets(int w){
+        float y = 60;
+        myTargets.add(new PointF(w/18 * 7, y+100));
+        myTargets.add(new PointF(w/18 * 1, y+120));
+        myTargets.add(new PointF(w/18 * 13, y));
+        myTargets.add(new PointF(w/18 * 4, y+80));
+        myTargets.add(new PointF(w/18 * 15, y));
+        myTargets.add(new PointF(w/18 * 8, y+100));
+        myTargets.add(new PointF(w/18 * 6, y));
+        myTargets.add(new PointF(w/18 * 14, y+120));
+        myTargets.add(new PointF(w/18 * 17, y));
+        myTargets.add(new PointF(w/18 * 12, y));
+        myTargets.add(new PointF(w/18 * 10, y+100));
+        myTargets.add(new PointF(w/18 * 3, y));
+        myTargets.add(new PointF(w/18 * 11, y+120));
+        myTargets.add(new PointF(w/18 * 2, y+120));
+        myTargets.add(new PointF(w/18 * 5, y));
+        myTargets.add(new PointF(w/18 * 7, y+80));
+        myTargets.add(new PointF(w/18 * 15, y+80));
+        myTargets.add(new PointF(w/18 * 12, y));
+        myTargets.add(new PointF(w/18 * 10, y+100));
+        myTargets.add(new PointF(w/18 * 5, y));
     }
 
     public void setBallPosition(int x, int y){
