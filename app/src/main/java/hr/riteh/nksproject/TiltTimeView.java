@@ -115,25 +115,43 @@ public class TiltTimeView extends View {
 
     public void moveBall(int defaultOrientation,int newOrientation){
 
-        int diffOrientation=newOrientation-defaultOrientation;
-        Log.d("asd","diff je sam****"+diffOrientation);
         if ((availableWidth == 0) || (availableHeight == 0)) return;
+        int diffOrientation = newOrientation - 270;
 
-        if(diffOrientation>3) {
-            speedX = speedX + speedStep;
-            if (speedX > maxSpeed) speedX = maxSpeed;
-        }else if(diffOrientation<-3){
-            speedX = speedX - speedStep;
-            if (speedX < -maxSpeed) speedX = -maxSpeed;
-        }else{
-            if( speedX > 0){
-                speedX = speedX - speedStep;
-                if (speedX < 0) speedX = 0;
-            }else if(speedX < 0) {
-                speedX = speedX + speedStep;
-                if (speedX > 0) speedX = 0;
+        if(diffOrientation > 2){
+            if (diffOrientation < 8){
+                if(speedX < 0){
+                    speedX += (float)diffOrientation / 40 * maxSpeed;
+                }else{
+                    speedX = (float)(diffOrientation-3) / 70 * maxSpeed;
+                }
+            }else{
+                if(speedX < 0){
+                    speedX += (float)diffOrientation / 40 * maxSpeed;
+                }else{
+                    speedX = (float)diffOrientation / 40 * maxSpeed;
+                }
             }
+            if(speedX > maxSpeed) speedX = maxSpeed;
+        }else if(diffOrientation < -2){
+            if(diffOrientation > -8){
+                if(speedX > 0) {
+                    speedX += (float)diffOrientation / 40 * maxSpeed;
+                }else{
+                    speedX = (float)(diffOrientation+3) / 70 * maxSpeed;
+                }
+            }else{
+                if(speedX > 0) {
+                    speedX += (float)diffOrientation / 40 * maxSpeed;
+                }else{
+                    speedX = (float)diffOrientation / 40 * maxSpeed;
+                }
+            }
+            if(speedX < -maxSpeed) speedX = -maxSpeed;
+        }else{
+            speedX = 0;
         }
+
         positionX = positionX + speedX;
 
         //Provjera kolizije sa zidom,zaljepi lopticu za zid

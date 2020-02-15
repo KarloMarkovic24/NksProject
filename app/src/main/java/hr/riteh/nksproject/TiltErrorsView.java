@@ -44,7 +44,7 @@ public class TiltErrorsView extends View {
         currentTarget=0;
         speedX = 0;
         maxSpeed = 20;
-        speedStep = maxSpeed / 30;
+        speedStep = maxSpeed / 10;
         myPaint = new Paint();
         ballBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ballv2);
         squareBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.black_square);
@@ -115,28 +115,45 @@ public class TiltErrorsView extends View {
     public void moveBall(int defaultOrientation,int newOrientation){
 
         if ((availableWidth == 0) || (availableHeight == 0)) return;
-        int diffOrientation = newOrientation - defaultOrientation;
+        int diffOrientation = newOrientation - 270;
         Log.d("asd","diff je sam****"+diffOrientation);
 
-        if(diffOrientation > 2) {
-            speedX = (float)diffOrientation / 45 * maxSpeed;
-            if (speedX > maxSpeed) speedX = maxSpeed;
-        }else if(diffOrientation < -3){
-            speedX = (float)diffOrientation / 45 * maxSpeed;
-            if (speedX < -maxSpeed) speedX = -maxSpeed;
-        }else {
-            if (speedX > 2) {
-                speedX = speedX - speedStep;
-                if (speedX < 0) speedX = 0;
-            } else if (speedX < 0) {
-                speedX = speedX + speedStep;
-                if (speedX > 0) speedX = 0;
+        if(diffOrientation > 2){
+            if (diffOrientation < 8){
+                if(speedX < 0){
+                    speedX += (float)diffOrientation / 40 * maxSpeed;
+                }else{
+                    speedX = (float)(diffOrientation-3) / 70 * maxSpeed;
+                }
+            }else{
+                if(speedX < 0){
+                    speedX += (float)diffOrientation / 40 * maxSpeed;
+                }else{
+                    speedX = (float)diffOrientation / 40 * maxSpeed;
+                }
             }
+            if(speedX > maxSpeed) speedX = maxSpeed;
+        }else if(diffOrientation < -2){
+            if(diffOrientation > -8){
+                if(speedX > 0) {
+                    speedX += (float)diffOrientation / 40 * maxSpeed;
+                }else{
+                    speedX = (float)(diffOrientation+3) / 70 * maxSpeed;
+                }
+            }else{
+                if(speedX > 0) {
+                    speedX += (float)diffOrientation / 40 * maxSpeed;
+                }else{
+                    speedX = (float)diffOrientation / 40 * maxSpeed;
+                }
+            }
+            if(speedX < -maxSpeed) speedX = -maxSpeed;
+        }else{
+            speedX = 0;
         }
 
-        Log.d("asd2","diff je sam****"+speedX);
         positionX = positionX + speedX;
-        positionY = positionY - 2;
+        positionY = positionY - 5;
 
         //Provjera kolizije sa zidom
         boolean inWall=false;
