@@ -187,7 +187,6 @@ public class ArrowErrorsView extends View {
         float upperBorder = targetLocation.y + ballRadius/2;
         float bottomBorder = targetLocation.y - ballRadius/2;
 
-
         if ((positionX  >= leftBorder) &&
                 (positionX  <= rightBorder) &&
                 (positionY <= upperBorder) &&
