@@ -44,7 +44,7 @@ public class TiltErrorsView extends View {
         currentTarget=0;
         speedX = 0;
         maxSpeed = 20;
-        speedStep = maxSpeed / 3;
+        speedStep = maxSpeed / 30;
         myPaint = new Paint();
         ballBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ballv2);
         squareBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.black_square);
@@ -114,28 +114,29 @@ public class TiltErrorsView extends View {
 
     public void moveBall(int defaultOrientation,int newOrientation){
 
-        int diffOrientation=newOrientation-defaultOrientation;
-        Log.d("asd","diff je sam****"+diffOrientation);
         if ((availableWidth == 0) || (availableHeight == 0)) return;
+        int diffOrientation = newOrientation - defaultOrientation;
+        Log.d("asd","diff je sam****"+diffOrientation);
 
-        if(diffOrientation>3) {
-
-            speedX = speedX + speedStep;
+        if(diffOrientation > 2) {
+            speedX = (float)diffOrientation / 45 * maxSpeed;
             if (speedX > maxSpeed) speedX = maxSpeed;
-        }else if(diffOrientation<-3){
-            speedX = speedX - speedStep;
+        }else if(diffOrientation < -3){
+            speedX = (float)diffOrientation / 45 * maxSpeed;
             if (speedX < -maxSpeed) speedX = -maxSpeed;
-        }else{
-            if( speedX > 0){
+        }else {
+            if (speedX > 2) {
                 speedX = speedX - speedStep;
                 if (speedX < 0) speedX = 0;
-            }else if(speedX < 0) {
+            } else if (speedX < 0) {
                 speedX = speedX + speedStep;
                 if (speedX > 0) speedX = 0;
             }
         }
+
+        Log.d("asd2","diff je sam****"+speedX);
         positionX = positionX + speedX;
-        positionY=positionY-2;
+        positionY = positionY - 2;
 
         //Provjera kolizije sa zidom
         boolean inWall=false;

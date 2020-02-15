@@ -63,7 +63,11 @@ public class ArrowTime extends AppCompatActivity {
         arrowTimeView.setBallRadius((float) radius);
         arrowTimeView.setCenterPosition(screenWidth/2,screenHeight/2);
         arrowTimeView.setBallPosition(screenWidth/2-radius,screenHeight/2-radius);
+<<<<<<< HEAD
         arrowTimeView.setTargets(screenWidth);
+=======
+        arrowTimeView.setTargets(screenWidth, screenHeight);
+>>>>>>> 2845ba9225c2b816473b75ee54f8ef43f72c2029
         arrowTimeView.setTargetPosition();
         mainView.addView(arrowTimeView);
         times = new ArrayList<>();

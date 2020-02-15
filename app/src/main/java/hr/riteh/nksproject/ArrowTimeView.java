@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.util.Log;
 import android.view.View;
 import java.util.ArrayList;
 
@@ -60,6 +61,7 @@ public class ArrowTimeView extends View {
         this.myBallInWallListener = inputListener;
     }
 
+<<<<<<< HEAD
     public void setTargets(int w){
         float y = centerY-ballRadius;
 
@@ -69,6 +71,16 @@ public class ArrowTimeView extends View {
         myTargets.add(new PointF(w/18 * 4, y));
       	myTargets.add(new PointF(w/18 * 15, y));
       	myTargets.add(new PointF(w/18 * 8, y));
+=======
+    public void setTargets(int w, int h){
+        float y = centerY-ballRadius;
+        myTargets.add(new PointF(w/18 * 7, y));
+        myTargets.add(new PointF(w/18 * 1, y));
+        myTargets.add(new PointF(w/18 * 13, y));
+        myTargets.add(new PointF(w/18 * 4, y));
+        myTargets.add(new PointF(w/18 * 15, y));
+        myTargets.add(new PointF(w/18 * 8, y));
+>>>>>>> 2845ba9225c2b816473b75ee54f8ef43f72c2029
         myTargets.add(new PointF(w/18 * 6, y));
         myTargets.add(new PointF(w/18 * 14, y));
         myTargets.add(new PointF(w/18 * 17, y));
