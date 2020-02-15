@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -31,12 +33,15 @@ public class TiltTime extends AppCompatActivity {
     long startTask;
     long endTask;
     int timeFlag=0;
-    int flag=0;
+    int defaultOrientation=0;
+    int newOrientation=0;
     int FRAME_RATE = 20;
     int radius;
     private static final int NUMBER_OF_TASKS = 3;
     boolean taskCompleted=true;
+    boolean setFirstOrientation=false;
     ArrayList<Long> times;
+    OrientationEventListener mOrientationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +73,35 @@ public class TiltTime extends AppCompatActivity {
         timeB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setFirstOrientation=true;
                 taskCompleted=false;
                 taskHandler.postDelayed(myTask, FRAME_RATE);
                 timeB.setVisibility(View.INVISIBLE);
                 startTask = System.currentTimeMillis();
             }
         });
+
+        mOrientationListener = new OrientationEventListener(this,
+                SensorManager.SENSOR_DELAY_NORMAL) {
+
+            @Override
+            public void onOrientationChanged(int orientation) {
+                if(setFirstOrientation){
+
+                    setFirstOrientation=false;
+                    defaultOrientation=orientation;
+                    Log.d("asd","ode sam****"+defaultOrientation);
+                }
+
+                newOrientation=orientation;
+                Log.d("asd","newOriantation sam****"+newOrientation);
+            }
+        };
+        if (mOrientationListener.canDetectOrientation() == true) {
+            mOrientationListener.enable();
+        } else {
+            mOrientationListener.disable();
+        }
 
         tiltTimeView.setBallInWallListener(new TiltTimeView.ballInWallListener() {
             @Override
@@ -175,7 +203,7 @@ public class TiltTime extends AppCompatActivity {
         @Override
         public void run(){
 
-            tiltTimeView.moveBall(flag);
+            tiltTimeView.moveBall(defaultOrientation,newOrientation);
             tiltTimeView.setTargetPosition();
             tiltTimeView.invalidate();
 

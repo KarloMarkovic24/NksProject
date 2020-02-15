@@ -29,11 +29,13 @@ public class TiltErrors extends AppCompatActivity {
     Handler taskHandler;
     int task=0;
     int errorNumber=0;
-    int flag=0;
+    int defaultOrientation=0;
+    int newOrientation=0;
     int FRAME_RATE = 20;
     int radius;
     private static final int NUMBER_OF_TASKS = 3;
     boolean taskCompleted=true;
+    boolean setFirstOrientation=false;
     OrientationEventListener mOrientationListener;
 
     @Override
@@ -62,11 +64,35 @@ public class TiltErrors extends AppCompatActivity {
         timeB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setFirstOrientation=true;
                 taskCompleted=false;
                 taskHandler.postDelayed(myTask, FRAME_RATE);
                 timeB.setVisibility(View.INVISIBLE);
             }
         });
+
+        mOrientationListener = new OrientationEventListener(this,
+                SensorManager.SENSOR_DELAY_NORMAL) {
+
+            @Override
+            public void onOrientationChanged(int orientation) {
+               if(setFirstOrientation){
+
+                   setFirstOrientation=false;
+                   defaultOrientation=orientation;
+                   Log.d("asd","ode sam****"+defaultOrientation);
+               }
+
+               newOrientation=orientation;
+                Log.d("asd","newOriantation sam****"+newOrientation);
+            }
+        };
+        if (mOrientationListener.canDetectOrientation() == true) {
+            mOrientationListener.enable();
+        } else {
+            mOrientationListener.disable();
+        }
+
 
         tiltErrorsView.setBallInWallListener(new TiltErrorsView.ballInWallListener(){
             @Override
@@ -134,6 +160,7 @@ public class TiltErrors extends AppCompatActivity {
     @Override
     public void onDestroy() {
         taskHandler.removeCallbacks(myTask);
+        mOrientationListener.disable();
         this.finishAffinity();
         super.onDestroy();
 
@@ -160,7 +187,7 @@ public class TiltErrors extends AppCompatActivity {
         @Override
         public void run(){
 
-            tiltErrorsView.moveBall(flag);
+            tiltErrorsView.moveBall(defaultOrientation,newOrientation);
             tiltErrorsView.setTargetPosition();
             tiltErrorsView.invalidate();
 

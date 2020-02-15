@@ -95,6 +95,7 @@ public class ArrowTime extends AppCompatActivity {
         timeB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //todo POPRAVIT BUG KADA SE LOPTICA STOPIRA ONDA TREBA RESETIRAT BRZINE NA 0
                 taskCompleted=false;
                 taskHandler.postDelayed(myTask, FRAME_RATE);
                 timeB.setVisibility(View.INVISIBLE);

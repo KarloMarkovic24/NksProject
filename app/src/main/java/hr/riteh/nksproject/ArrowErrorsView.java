@@ -144,9 +144,6 @@ public class ArrowErrorsView extends View {
                 myBallInWallListener.onBallInWall("wall");
         }
 
-
-
-
         invalidate();
         //Detekcija je li lopta unutar okvira
         int obstacleIndex = isBallInTarget();

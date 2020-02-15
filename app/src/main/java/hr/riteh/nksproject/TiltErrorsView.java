@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class TiltErrorsView extends View {
         currentTarget=0;
         speedX = 0;
         maxSpeed = 20;
-        speedStep = maxSpeed / 30;
+        speedStep = maxSpeed / 3;
         myPaint = new Paint();
         ballBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ballv2);
         squareBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.black_square);
@@ -98,17 +99,20 @@ public class TiltErrorsView extends View {
         squareBitmap = Bitmap.createScaledBitmap(squareBitmap,2*d,2*d,false);
     }
 
-    public void moveBall(int flag){
+    public void moveBall(int defaultOrientation,int newOrientation){
 
+        int diffOrientation=newOrientation-defaultOrientation;
+        Log.d("asd","diff je sam****"+diffOrientation);
         if ((availableWidth == 0) || (availableHeight == 0)) return;
 
-        if(flag == 1) {
+        if(diffOrientation>3) {
+
             speedX = speedX + speedStep;
             if (speedX > maxSpeed) speedX = maxSpeed;
-        }else if(flag == 2){
+        }else if(diffOrientation<-3){
             speedX = speedX - speedStep;
             if (speedX < -maxSpeed) speedX = -maxSpeed;
-        }else if(flag == 3){
+        }else{
             if( speedX > 0){
                 speedX = speedX - speedStep;
                 if (speedX < 0) speedX = 0;
