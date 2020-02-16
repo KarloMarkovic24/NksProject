@@ -133,7 +133,7 @@ public class TiltErrors extends AppCompatActivity {
     private void testingDone() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(TiltErrors.this);
         String userName = preferences.getString("username","");
-        String results = (userName + " " + "TiltErrors "+errorNumber);
+        String results = (userName + " " + "TiltErrors "+errorNumber+"\n");
 
 
         try {

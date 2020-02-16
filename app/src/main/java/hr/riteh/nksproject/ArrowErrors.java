@@ -128,7 +128,7 @@ public class ArrowErrors extends AppCompatActivity {
     private void testingDone() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ArrowErrors.this);
         String userName = preferences.getString("username","");
-        String results = (userName + " " + "ArrowErrors "+errorNumber);
+        String results = (userName + " " + "ArrowErrors "+errorNumber+"\n");
 
 
         try {
