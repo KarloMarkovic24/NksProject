@@ -47,7 +47,7 @@ public class ArrowTimeView extends View {
             maxSpeed = 20;
             speedStep = maxSpeed / 30;
             myPaint = new Paint();
-            ballBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ballv2);
+            ballBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
             squareBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.black_square);
             myTargets = new ArrayList<>();
         }

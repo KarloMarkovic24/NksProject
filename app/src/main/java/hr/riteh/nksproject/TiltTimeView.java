@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class TiltTimeView extends View {
         maxSpeed = 20;
         speedStep = maxSpeed / 30;
         myPaint = new Paint();
-        ballBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ballv2);
+        ballBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
         squareBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.black_square);
         myTargets = new ArrayList<>();
     }
