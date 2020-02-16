@@ -62,7 +62,7 @@ public class ArrowTime extends AppCompatActivity {
         arrowTimeView = new ArrowTimeView(this);
         arrowTimeView.setBallRadius((float) radius);
         arrowTimeView.setCenterPosition(screenWidth/2,screenHeight/2);
-        arrowTimeView.setBallPosition(screenWidth/2-radius,screenHeight/2-radius);
+        arrowTimeView.setBallPosition(screenWidth/2,screenHeight/2);
         arrowTimeView.setTargets(screenWidth);
         arrowTimeView.setTargetPosition();
         mainView.addView(arrowTimeView);
@@ -124,7 +124,7 @@ public class ArrowTime extends AppCompatActivity {
                     if(time2-time1>500) {
                         endTask = System.currentTimeMillis();
                         taskCompleted=true;
-                        arrowTimeView.setBallPosition(screenWidth/2-radius,screenHeight/2-radius);
+                        arrowTimeView.setBallPosition(screenWidth/2,screenHeight/2);
                         arrowTimeView.nextTarget();
                         timeB.setVisibility(View.VISIBLE);
                         taskDone();

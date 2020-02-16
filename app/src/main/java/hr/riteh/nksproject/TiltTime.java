@@ -62,7 +62,7 @@ public class TiltTime extends AppCompatActivity {
         tiltTimeView = new TiltTimeView(this);
         tiltTimeView.setBallRadius((float) radius);
         tiltTimeView.setCenterPosition(screenWidth/2,screenHeight/2);
-        tiltTimeView.setBallPosition(screenWidth/2-radius,screenHeight/2-radius);
+        tiltTimeView.setBallPosition(screenWidth/2,screenHeight/2);
         tiltTimeView.setTargets(screenWidth);
         tiltTimeView.setTargetPosition();
         mainView.addView(tiltTimeView);
@@ -91,11 +91,9 @@ public class TiltTime extends AppCompatActivity {
 
                     setFirstOrientation=false;
                     defaultOrientation=orientation;
-                    Log.d("asd","ode sam****"+defaultOrientation);
                 }
 
                 newOrientation=orientation;
-                Log.d("asd","newOriantation sam****"+newOrientation);
             }
         };
         if (mOrientationListener.canDetectOrientation() == true) {
@@ -125,7 +123,7 @@ public class TiltTime extends AppCompatActivity {
                     if(time2-time1>500) {
                         endTask = System.currentTimeMillis();
                         taskCompleted=true;
-                        tiltTimeView.setBallPosition(screenWidth/2-radius,screenHeight/2-radius);
+                        tiltTimeView.setBallPosition(screenWidth/2,screenHeight/2);
                         tiltTimeView.nextTarget();
                         timeB.setVisibility(View.VISIBLE);
                         taskDone();

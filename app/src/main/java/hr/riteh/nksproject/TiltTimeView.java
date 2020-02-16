@@ -61,7 +61,7 @@ public class TiltTimeView extends View {
     }
 
     public void setTargets(int w){
-        float y = centerY-ballRadius;
+        float y = centerY;
 
         myTargets.add(new PointF(w/18 * 17, y));
         myTargets.add(new PointF(w/18 * 4, y));

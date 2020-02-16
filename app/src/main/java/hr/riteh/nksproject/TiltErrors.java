@@ -55,7 +55,7 @@ public class TiltErrors extends AppCompatActivity {
         tiltErrorsView = new TiltErrorsView(this);
         tiltErrorsView.setBallRadius((float) radius);
         tiltErrorsView.setCenterPosition(screenWidth/2,screenHeight/2);
-        tiltErrorsView.setBallPosition(screenWidth/2-radius,screenHeight-4*radius);
+        tiltErrorsView.setBallPosition(screenWidth/2,screenHeight-4*radius);
         tiltErrorsView.setTargets(screenWidth);
         tiltErrorsView.setTargetPosition();
         mainView.addView(tiltErrorsView);
@@ -81,11 +81,10 @@ public class TiltErrors extends AppCompatActivity {
 
                    setFirstOrientation=false;
                    defaultOrientation=orientation;
-                   Log.d("asd","ode sam****"+defaultOrientation);
-               }
 
+               }
                newOrientation=orientation;
-                Log.d("asd","newOriantation sam****"+newOrientation);
+
             }
         };
         if (mOrientationListener.canDetectOrientation() == true) {
@@ -102,7 +101,7 @@ public class TiltErrors extends AppCompatActivity {
                 if(input.equals("wall")){
                     errorNumber++;
                     taskCompleted=true;
-                    tiltErrorsView.setBallPosition(screenWidth/2-radius,screenHeight-4*radius);
+                    tiltErrorsView.setBallPosition(screenWidth/2,screenHeight-4*radius);
                     tiltErrorsView.nextTarget();
                     timeB.setVisibility(View.VISIBLE);
                     taskDone();
@@ -112,7 +111,7 @@ public class TiltErrors extends AppCompatActivity {
                 if (input.equals("inside")) {
 
                     taskCompleted=true;
-                    tiltErrorsView.setBallPosition(screenWidth/2-radius,screenHeight-4*radius);
+                    tiltErrorsView.setBallPosition(screenWidth/2,screenHeight-4*radius);
                     tiltErrorsView.nextTarget();
                     timeB.setVisibility(View.VISIBLE);
                     taskDone();

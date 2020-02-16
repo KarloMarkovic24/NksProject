@@ -63,7 +63,7 @@ public class ArrowTimeView extends View {
 
 
     public void setTargets(int w){
-        float y = centerY-ballRadius;
+        float y = centerY;
 
      	myTargets.add(new PointF(w/18 * 7, y));
      	myTargets.add(new PointF(w/18 * 1, y));

@@ -52,7 +52,7 @@ public class ArrowErrors extends AppCompatActivity {
         arrowErrorsView = new ArrowErrorsView(this);
         arrowErrorsView.setBallRadius((float) radius);
         arrowErrorsView.setCenterPosition(screenWidth/2,screenHeight/2);
-        arrowErrorsView.setBallPosition(screenWidth/2-radius,screenHeight-4*radius);
+        arrowErrorsView.setBallPosition(screenWidth/2,screenHeight-4*radius);
         arrowErrorsView.setTargets(screenWidth);
         arrowErrorsView.setTargetPosition();
         mainView.addView(arrowErrorsView);
@@ -99,21 +99,18 @@ public class ArrowErrors extends AppCompatActivity {
                 if(input.equals("wall")){
                     errorNumber++;
                     taskCompleted=true;
-                    arrowErrorsView.setBallPosition(screenWidth/2-radius,screenHeight-4*radius);
+                    arrowErrorsView.setBallPosition(screenWidth/2,screenHeight-4*radius);
                     arrowErrorsView.nextTarget();
                     timeB.setVisibility(View.VISIBLE);
                     taskDone();
-
                 }
-
                 if (input.equals("inside")) {
 
                         taskCompleted=true;
-                        arrowErrorsView.setBallPosition(screenWidth/2-radius,screenHeight-4*radius);
+                        arrowErrorsView.setBallPosition(screenWidth/2,screenHeight-4*radius);
                         arrowErrorsView.nextTarget();
                         timeB.setVisibility(View.VISIBLE);
                         taskDone();
-
                 }
             }
         });

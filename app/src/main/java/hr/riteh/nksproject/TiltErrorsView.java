@@ -116,7 +116,6 @@ public class TiltErrorsView extends View {
 
         if ((availableWidth == 0) || (availableHeight == 0)) return;
         int diffOrientation = newOrientation - 270;
-        Log.d("asd","diff je sam****"+diffOrientation);
 
         if(diffOrientation > 2){
             if (diffOrientation < 8){
@@ -177,8 +176,6 @@ public class TiltErrorsView extends View {
         }
 
 
-
-
         invalidate();
         //Detekcija je li lopta unutar okvira
         int obstacleIndex = isBallInTarget();
@@ -229,8 +226,6 @@ public class TiltErrorsView extends View {
         }
         return 2; // izvan okvira
     }
-
-
 }
 
 
