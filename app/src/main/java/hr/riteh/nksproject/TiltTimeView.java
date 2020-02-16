@@ -118,37 +118,19 @@ public class TiltTimeView extends View {
         int diffOrientation = newOrientation - 270;
 
         if(diffOrientation > 2){
-            if (diffOrientation < 8){
-                if(speedX < 0){
-                    speedX += (float)diffOrientation / 40 * maxSpeed;
-                }else{
-                    speedX = (float)(diffOrientation-3) / 70 * maxSpeed;
-                }
-            }else{
-                if(speedX < 0){
-                    speedX += (float)diffOrientation / 40 * maxSpeed;
-                }else{
-                    speedX = (float)diffOrientation / 40 * maxSpeed;
-                }
-            }
+            speedX = (float)(diffOrientation-2) / 40 * maxSpeed;
             if(speedX > maxSpeed) speedX = maxSpeed;
         }else if(diffOrientation < -2){
-            if(diffOrientation > -8){
-                if(speedX > 0) {
-                    speedX += (float)diffOrientation / 40 * maxSpeed;
-                }else{
-                    speedX = (float)(diffOrientation+3) / 70 * maxSpeed;
-                }
-            }else{
-                if(speedX > 0) {
-                    speedX += (float)diffOrientation / 40 * maxSpeed;
-                }else{
-                    speedX = (float)diffOrientation / 40 * maxSpeed;
-                }
-            }
+            speedX = (float)(diffOrientation+2) / 40 * maxSpeed;
             if(speedX < -maxSpeed) speedX = -maxSpeed;
         }else{
-            speedX = 0;
+            if( speedX > 0){
+                speedX = speedX - speedStep;
+                if (speedX < 0) speedX = 0;
+            }else if(speedX < 0) {
+                speedX = speedX + speedStep;
+                if (speedX > 0) speedX = 0;
+            }
         }
 
         positionX = positionX + speedX;

@@ -134,7 +134,7 @@ public class ArrowErrorsView extends View {
             }
         }
         positionX = positionX + speedX;
-        positionY=positionY-5;
+        positionY=positionY-7;
 
         //Provjera kolizije sa zidom
         boolean inWall=false;
